@@ -12,6 +12,20 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y wget ca-certifica
   apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY checksum.sha256 /root
+# Install minizip from source (unavailable from apt on Ubuntu 14.04)
+RUN curl -L https://www.zlib.net/zlib-1.2.11.tar.gz | tar -xz -C /tmp && \
+    cd /tmp/zlib-1.2.11/contrib/minizip && \
+    autoreconf -fi && \
+    ./configure --enable-shared=no --with-pic && \
+    make -j$(nproc) install && \
+    cd / && rm -rf /tmp/zlib-1.2.11
+
+# Install zmq from source (outdated version from apt on Ubuntu 14.04)
+RUN curl -L https://github.com/zeromq/libzmq/releases/download/v4.3.1/zeromq-4.3.1.tar.gz | tar -xz -C /tmp && \
+    cd /tmp/zeromq-4.3.1/ && ./configure --disable-shared --without-libsodium --with-pic && \
+    make -j$(nproc) install && \
+    cd / && rm -rf /tmp/zeromq-4.3.1/
+
 
 RUN set -x && \
       cd /root && \
@@ -19,7 +33,7 @@ RUN set -x && \
       cat checksum.sha256 | grep ${VERSION} | sha256sum -c  && \
   tar xvf zcoin-${VERSION}-linux64.tar.gz && \
   cd zcoin-${VERSION_BUILD} && \
-  mv bin/* /usr/bin/ && \
+  mv bin/zcoin* /usr/bin/ && \
   mv lib/* /usr/bin/ && \
   mv include/* /usr/bin/ && \
   mv share/* /usr/bin/ && \
