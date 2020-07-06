@@ -24,10 +24,9 @@ RUN apt-get update && apt-get install -y \
     libtool \
     libzmq3-dev \
     make \
-    openjdk-8-jdk \
     pkg-config \
     zlib1g-dev
-    
+
 # Install minizip from source (unavailable from apt on Ubuntu 14.04)
 RUN curl -L https://www.zlib.net/zlib-1.2.11.tar.gz | tar -xz -C /tmp && \
     cd /tmp/zlib-1.2.11/contrib/minizip && \
