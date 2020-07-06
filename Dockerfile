@@ -1,5 +1,3 @@
-0.14.0.2/0.14.0.2
-https://github.com/zcoinofficial/zcoin/releases/download/v0.14.0.2/zcoin-0.14.0.2
 FROM debian:buster
 
 ARG VERSION
