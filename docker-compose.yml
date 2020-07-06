@@ -1,0 +1,23 @@
+version: '3.6'
+
+services:
+  zcoin:
+    restart: always
+    image: realnuts/docker_zcoind:v1.0.14.0.2
+    ports:
+      - "8168:8168"
+      - "8888:8888"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/zcoin_data:/zcoin/data
+    command:
+       - "-printtoconsole"
+       - "-regtest=0"
+       - "-rest"
+       - "-rpcallowip=0/32"
+       - "-rpcallowip=172.17.0.0/16"
+       - "-rpcpassword=test"
+       - "-wallet=wallet1"
+       - "-rpcport=8333"
+       - "-rpcuser=foo"
+       - "-server"
